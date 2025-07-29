@@ -1,0 +1,12 @@
+<suite name="Smoke Suite">
+    <test name="Smoke Tests">
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="com.epam.seleniumwebdriver.testscenario"/>
+        </packages>
+    </test>
+</suite>
