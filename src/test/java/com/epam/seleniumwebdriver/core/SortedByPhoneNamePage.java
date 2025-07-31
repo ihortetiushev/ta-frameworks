@@ -1,4 +1,4 @@
-package com.epam.seleniumwebdriver.utils;
+package com.epam.seleniumwebdriver.core;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,9 +7,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 public class SortedByPhoneNamePage extends PageFactory {
-
-    private final WebDriver driver;
-
     @FindBy(how = How.XPATH, using = "//*[@class='sort-by__select']")
     public WebElement sortSpace;
     @FindBy(how = How.XPATH, using = "//*[@class='sort-by__list']//li[text()='від дорогих до дешевих']")
@@ -47,7 +44,6 @@ public class SortedByPhoneNamePage extends PageFactory {
     public String expectedChargerUrl = "https://allo.ua/ua/zarjadnye-ustrojstva/zarjadnoe-ustrojstvo-google-pixel-charger-30w.html";
 
     public SortedByPhoneNamePage(WebDriver driver) {
-        this.driver = driver;
         initElements(driver, this);
     }
 }

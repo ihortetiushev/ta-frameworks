@@ -1,4 +1,4 @@
-package com.epam.seleniumwebdriver.utils;
+package com.epam.seleniumwebdriver.drivermanager;
 
 public enum DriverType {
     Chrome,

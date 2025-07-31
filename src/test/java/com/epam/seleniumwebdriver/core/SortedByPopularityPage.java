@@ -1,4 +1,4 @@
-package com.epam.seleniumwebdriver.utils;
+package com.epam.seleniumwebdriver.core;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,8 +7,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 public class SortedByPopularityPage extends PageFactory {
-
-    private final WebDriver driver;
 
     public static String expectedLaptopXpath = "//*[contains(@class, 'product-card__content')]//a[text()='Ноутбук Apple MacBook Air 13 M1 (MGN63) Space Grey']";
     @FindBy(how = How.XPATH, using = "//*[@class='products-layout__container products-layout--grid']/div[1]")
@@ -22,7 +20,6 @@ public class SortedByPopularityPage extends PageFactory {
     public WebElement expectedLaptop;
 
     public SortedByPopularityPage(WebDriver driver) {
-        this.driver = driver;
         initElements(driver, this);
     }
 }

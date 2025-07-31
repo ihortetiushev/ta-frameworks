@@ -1,14 +1,10 @@
-package com.epam.seleniumwebdriver.utils;
+package com.epam.seleniumwebdriver.core;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.*;
 
 public class MainPage extends PageFactory {
-
-    private final WebDriver driver;
 
     @FindBy(how = How.XPATH, using = "//a[\n" +
             "  contains(@href, '/planshety-i-gadzhety') and\n" +
@@ -35,7 +31,6 @@ public class MainPage extends PageFactory {
     WebElement searchBar;
 
     public MainPage(WebDriver driver) {
-        this.driver = driver;
         initElements(driver, this);
     }
 }

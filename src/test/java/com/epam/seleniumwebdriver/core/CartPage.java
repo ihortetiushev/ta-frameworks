@@ -1,5 +1,6 @@
-package com.epam.seleniumwebdriver.utils;
+package com.epam.seleniumwebdriver.core;
 
+import com.epam.seleniumwebdriver.drivermanager.Driver;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,7 +9,9 @@ import org.openqa.selenium.support.PageFactory;
 
 public class CartPage extends PageFactory {
 
-    private final WebDriver driver;
+    public CartPage(WebDriver driver) {
+        initElements(driver, this);
+    }
 
     @FindBy(how = How.XPATH, using = "//*[name()='svg'][contains(@class, 'vi') and contains(@class, 'plus')]")
     public WebElement addQuantity;
@@ -21,8 +24,4 @@ public class CartPage extends PageFactory {
     @FindBy(how = How.XPATH, using = "//*[@class='qty__count']//*[@class='input']")
     public WebElement productQuantity;
 
-    public CartPage(WebDriver driver) {
-        this.driver = driver;
-        initElements(driver, this);
-    }
 }

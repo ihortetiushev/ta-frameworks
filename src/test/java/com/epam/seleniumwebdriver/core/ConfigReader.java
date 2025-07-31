@@ -1,4 +1,4 @@
-package com.epam.seleniumwebdriver.utils;
+package com.epam.seleniumwebdriver.core;
 
 import java.io.IOException;
 import java.io.InputStream;
