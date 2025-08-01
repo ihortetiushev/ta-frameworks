@@ -3,66 +3,36 @@ package com.epam.seleniumwebdriver.testscenario;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import com.epam.seleniumwebdriver.utils.*;
+import com.epam.seleniumwebdriver.core.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.epam.seleniumwebdriver.utils.DriverType.Chrome;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.Duration;
 
 @Test(groups = "regression")
-public class BuyTheMostPopularLaptopTestCase {
+public class BuyTheMostPopularLaptopTestCase extends BasePage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BuyNonExistentProductTestCase.class);
     public static String stringExpectedTitle;
     public static String stringActualTitle;
     public static String expectedProductQuantity = "3";
-    private final DriverType DRIVER_NAME = Chrome;
-    BasePage page;
-
-    @BeforeClass
-    public void setup() {
-        LOGGER.info("Setup WebDriver");
-        page = new BasePage(BasePage.createDriver(DRIVER_NAME));
-        LOGGER.debug("Driver is " + DRIVER_NAME);
-        page.setBrowserPage(ConfigReader.get("base.url"));
-        LOGGER.debug("Open " + ConfigReader.get("base.url") + " URl");
-    }
-
-    @AfterMethod
-    public void takeScreenshot(ITestResult testResult) {
-        if (!testResult.isSuccess()) {
-            page.takeScreenshotForFailure(testResult);
-            LOGGER.error("Screenshot of failure has been taken in \"screenshots\" directory");
-        }
-    }
-
-    @AfterClass
-    public void closeDriver() {
-        page.driver.quit();
-        LOGGER.info("Close WebDriver");
-    }
 
     @Test
     void buyTheMostPopularLaptopPositiveTest() {
-        MainPage mainPage = new MainPage(page.driver);
-        SortedByPopularityPage popularityPage = new SortedByPopularityPage(page.driver);
-        CartPage cartPage = new CartPage(page.driver);
+        MainPage mainPage = new MainPage(getDriver());
+        SortedByPopularityPage popularityPage = new SortedByPopularityPage(getDriver());
+        CartPage cartPage = new CartPage(getDriver());
 
-        Actions actions = new Actions(page.driver);
+        Actions actions = new Actions(getDriver());
 
-        WebDriverWait wait = new WebDriverWait(page.driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOf(page.locationButton));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(locationButton));
 
-        page.selectLocation(ConfigReader.get("location01"));
-        LOGGER.debug("Location input " + ConfigReader.get("location01"));
+        selectLocation("Одеса");
+        LOGGER.debug("Location input: \"Одеса\"");
         mainPage.catalogButton.click();
 
         wait.until(ExpectedConditions.visibilityOf(mainPage.laptopsPcTabletsCategory));
@@ -71,7 +41,7 @@ public class BuyTheMostPopularLaptopTestCase {
 
         wait.until(ExpectedConditions.visibilityOf(mainPage.laptopsPcTabletsCategoryAppleSelector));
         mainPage.laptopsPcTabletsCategoryAppleSelector.click();
-        LOGGER.info("Searching laptops, PC and tablets category by Apple manufacture");
+        LOGGER.debug("Searching laptops, PC and tablets category by Apple manufacture");
 
         actions.moveToElement(mainPage.sortButton).perform();
         mainPage.sortByPopularityButton.click();
@@ -103,6 +73,7 @@ public class BuyTheMostPopularLaptopTestCase {
         if (!stringActualTitle.equals(stringExpectedTitle)) {
             LOGGER.error("Text '{}' is not as expected '{}'", stringActualTitle, stringExpectedTitle);
         }
+
         assertThat(stringActualTitle)
                 .as("Text '%s' is not as expected '%s'", stringActualTitle, stringExpectedTitle)
                 .isEqualTo(stringExpectedTitle);
@@ -119,6 +90,7 @@ public class BuyTheMostPopularLaptopTestCase {
         if (!cartPage.productQuantity.getAttribute("value").equals(expectedProductQuantity)) {
             LOGGER.error("Text '{}' is not as expected '{}'", cartPage.productQuantity.getAttribute("value"), expectedProductQuantity);
         }
+
         assertThat(cartPage.productQuantity.getAttribute("value"))
                 .as("Text '%s' is not as expected '%s'", cartPage.productQuantity.getAttribute("value"), expectedProductQuantity)
                 .isEqualTo(expectedProductQuantity);

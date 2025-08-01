@@ -4,70 +4,39 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import com.epam.seleniumwebdriver.utils.*;
+import com.epam.seleniumwebdriver.core.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 
-import static com.epam.seleniumwebdriver.utils.DriverType.Chrome;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Test(groups = {"regression", "smoke"})
-public class BuyProductByNameTestCase {
+public class BuyProductByNameTestCase extends BasePage {
     private static final Logger LOGGER = LoggerFactory.getLogger(BuyNonExistentProductTestCase.class);
     public static String stringExpectedTitle;
     public static String stringActualTitle;
-    private final DriverType DRIVER_NAME = Chrome;
-    BasePage page;
-
-    @BeforeClass
-    public void setup() {
-        LOGGER.info("setup WebDriver");
-        page = new BasePage(BasePage.createDriver(DRIVER_NAME));
-        LOGGER.debug("Driver is " + DRIVER_NAME);
-        page.setBrowserPage(ConfigReader.get("base.url"));
-        LOGGER.debug("Open " + ConfigReader.get("base.url") + " URl");
-    }
-
-    @AfterMethod
-    public void takeScreenshot(ITestResult testResult) {
-        page.takeScreenshotForFailure(testResult);
-        LOGGER.error("Screenshot of failure has been taken in \"screenshots\" directory");
-    }
-
-    @AfterClass
-    public void closeDriver() {
-        LOGGER.info("Close WebDriver");
-        page.driver.quit();
-    }
 
     @Test
     void buyProductByNamePositiveTest() {
-        MainPage mainPage = new MainPage(page.driver);
-        SortedByPhoneNamePage sortedByNamePage = new SortedByPhoneNamePage(page.driver);
-        CartPage cartPage = new CartPage(page.driver);
+        MainPage mainPage = new MainPage(getDriver());
+        SortedByPhoneNamePage sortedByNamePage = new SortedByPhoneNamePage(getDriver());
+        CartPage cartPage = new CartPage(getDriver());
 
-        WebDriverWait wait = new WebDriverWait(page.driver, Duration.ofSeconds(7));
-        Actions actions = new Actions(page.driver);
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(7));
+        Actions actions = new Actions(getDriver());
 
-        wait.until(ExpectedConditions.visibilityOf(page.locationButton));
+        wait.until(ExpectedConditions.visibilityOf(locationButton));
 
-        page.selectLocation(ConfigReader.get("location02"));
-        LOGGER.debug("Location input " + ConfigReader.get("location02"));
-
+        selectLocation("Харків");
+        LOGGER.debug("Location input: \"Харків\"");
         mainPage.searchBar.click();
 
         LOGGER.info("Product searching by name");
-        //mainPage.searchBar.sendKeys(ConfigReader.get("search.product01"));
-        page.searchProduct(mainPage.searchBar, ConfigReader.get("search.product01"));
-
-        LOGGER.debug("Searching product: " + ConfigReader.get("search.product01"));
+        searchProduct(mainPage.searchBar, "Pixel 9 pro");
+        LOGGER.debug("Searching product: \"Pixel 9 pro\"");
 
         mainPage.searchBar.sendKeys(Keys.ENTER);
 
@@ -114,9 +83,8 @@ public class BuyProductByNameTestCase {
         sortedByNamePage.searchBar.click();
 
         LOGGER.info("Searching second product");
-        page.searchProduct(sortedByNamePage.searchBar, ConfigReader.get("search.product02"));
-
-        LOGGER.debug("Entering second product " + ConfigReader.get("search.product02"));
+        searchProduct(sortedByNamePage.searchBar, "Pixel 30W charger");
+        LOGGER.debug("Entering second product: \"Pixel 30W charger\"");
         sortedByNamePage.searchBar.sendKeys(Keys.ENTER);
 
         wait.until(ExpectedConditions.visibilityOf(sortedByNamePage.sortSpace));
