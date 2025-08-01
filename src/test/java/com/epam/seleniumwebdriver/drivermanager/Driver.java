@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 public class Driver {
     private WebDriver webDriver;
 
+
     public WebDriver createDriver(DriverType driverType) {
         WebDriver webDriver;
         switch (driverType) {
@@ -53,6 +54,4 @@ public class Driver {
             webDriver = null;
         }
     }
-
-
 }

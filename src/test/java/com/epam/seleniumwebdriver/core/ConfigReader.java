@@ -7,7 +7,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 public class ConfigReader {
+
     private static final Properties properties = new Properties();
+
 
     static {
         String env = System.getProperty("environment", "dev");

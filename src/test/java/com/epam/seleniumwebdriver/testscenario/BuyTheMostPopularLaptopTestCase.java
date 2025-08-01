@@ -31,8 +31,8 @@ public class BuyTheMostPopularLaptopTestCase extends BasePage {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(locationButton));
 
-        selectLocation(ConfigReader.get("location01"));
-        LOGGER.debug("Location input " + ConfigReader.get("location01"));
+        selectLocation("Одеса");
+        LOGGER.debug("Location input: \"Одеса\"");
         mainPage.catalogButton.click();
 
         wait.until(ExpectedConditions.visibilityOf(mainPage.laptopsPcTabletsCategory));
@@ -41,7 +41,7 @@ public class BuyTheMostPopularLaptopTestCase extends BasePage {
 
         wait.until(ExpectedConditions.visibilityOf(mainPage.laptopsPcTabletsCategoryAppleSelector));
         mainPage.laptopsPcTabletsCategoryAppleSelector.click();
-        LOGGER.info("Searching laptops, PC and tablets category by Apple manufacture");
+        LOGGER.debug("Searching laptops, PC and tablets category by Apple manufacture");
 
         actions.moveToElement(mainPage.sortButton).perform();
         mainPage.sortByPopularityButton.click();
@@ -73,6 +73,7 @@ public class BuyTheMostPopularLaptopTestCase extends BasePage {
         if (!stringActualTitle.equals(stringExpectedTitle)) {
             LOGGER.error("Text '{}' is not as expected '{}'", stringActualTitle, stringExpectedTitle);
         }
+
         assertThat(stringActualTitle)
                 .as("Text '%s' is not as expected '%s'", stringActualTitle, stringExpectedTitle)
                 .isEqualTo(stringExpectedTitle);
@@ -89,6 +90,7 @@ public class BuyTheMostPopularLaptopTestCase extends BasePage {
         if (!cartPage.productQuantity.getAttribute("value").equals(expectedProductQuantity)) {
             LOGGER.error("Text '{}' is not as expected '{}'", cartPage.productQuantity.getAttribute("value"), expectedProductQuantity);
         }
+
         assertThat(cartPage.productQuantity.getAttribute("value"))
                 .as("Text '%s' is not as expected '%s'", cartPage.productQuantity.getAttribute("value"), expectedProductQuantity)
                 .isEqualTo(expectedProductQuantity);

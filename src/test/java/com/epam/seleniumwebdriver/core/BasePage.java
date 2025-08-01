@@ -1,4 +1,5 @@
 package com.epam.seleniumwebdriver.core;
+
 import com.epam.seleniumwebdriver.core.report.ScreenshotReport;
 import com.epam.seleniumwebdriver.drivermanager.Driver;
 import com.epam.seleniumwebdriver.testscenario.BuyNonExistentProductTestCase;
@@ -13,7 +14,7 @@ public class BasePage extends PageFactory {
 
     private Driver driver = new Driver();
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(BuyNonExistentProductTestCase.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BuyNonExistentProductTestCase.class);
     @FindBy(how = How.XPATH, using = "//div[@class='mh-loc']//button[@class='mh-button']")
     public WebElement locationButton;
     @FindBy(how = How.XPATH, using = "//div[contains(@class, 'geo__cities')]//*[@data-geo-select-city='Харків']")
