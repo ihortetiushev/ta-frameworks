@@ -1,74 +1,76 @@
 package com.epam.seleniumwebdriver.testscenario;
 
+import com.epam.seleniumwebdriver.core.BasePage;
+import com.epam.seleniumwebdriver.core.CartPage;
+import com.epam.seleniumwebdriver.core.MainPage;
+import com.epam.seleniumwebdriver.core.SortedByPhoneNamePage;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import com.epam.seleniumwebdriver.core.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.*;
+import org.testng.annotations.Test;
 
 import java.time.Duration;
 
+import static com.epam.seleniumwebdriver.drivermanager.DriverManager.getDriver;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Test(groups = {"regression", "smoke"})
 public class BuyProductByNameTestCase extends BasePage {
+
+    private final MainPage MAIN_PAGE = new MainPage(getDriver());
+    private final SortedByPhoneNamePage SORTED_BY_NAME_PAGE = new SortedByPhoneNamePage(getDriver());
+    private final CartPage CART_PAGE = new CartPage(getDriver());
+
     private static final Logger LOGGER = LoggerFactory.getLogger(BuyNonExistentProductTestCase.class);
     public static String stringExpectedTitle;
     public static String stringActualTitle;
 
     @Test
     void buyProductByNamePositiveTest() {
-        MainPage mainPage = new MainPage(getDriver());
-        SortedByPhoneNamePage sortedByNamePage = new SortedByPhoneNamePage(getDriver());
-        CartPage cartPage = new CartPage(getDriver());
-
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(7));
+        WebDriverWait explicitWait = new WebDriverWait(getDriver(), Duration.ofSeconds(7));
         Actions actions = new Actions(getDriver());
 
-        wait.until(ExpectedConditions.visibilityOf(locationButton));
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
         selectLocation("Харків");
         LOGGER.debug("Location input: \"Харків\"");
-        mainPage.searchBar.click();
+        MAIN_PAGE.searchBar.click();
 
         LOGGER.info("Product searching by name");
-        searchProduct(mainPage.searchBar, "Pixel 9 pro");
+        searchProduct(MAIN_PAGE.searchBar, "Pixel 9 pro");
         LOGGER.debug("Searching product: \"Pixel 9 pro\"");
 
-        mainPage.searchBar.sendKeys(Keys.ENTER);
+        MAIN_PAGE.searchBar.sendKeys(Keys.ENTER);
 
         LOGGER.info("Sorted page by product name");
-        wait.until(ExpectedConditions.urlToBe(sortedByNamePage.sortedByPhoneNamePageUrl));
-        LOGGER.debug("Go to sorted page by product name. URL " + sortedByNamePage.sortedByPhoneNamePageUrl);
+        explicitWait.until(ExpectedConditions.urlToBe(SORTED_BY_NAME_PAGE.sortedByPhoneNamePageUrl));
+        LOGGER.debug("Go to sorted page by product name. URL " + SORTED_BY_NAME_PAGE.sortedByPhoneNamePageUrl);
 
-        actions.moveToElement(sortedByNamePage.sortSpace).perform();
-        sortedByNamePage.sortByExpensive.click();
+        actions.moveToElement(SORTED_BY_NAME_PAGE.sortSpace).perform();
+        SORTED_BY_NAME_PAGE.sortByExpensive.click();
         LOGGER.debug("Sort page by the most expensive products");
 
-        wait.until(ExpectedConditions.urlToBe(sortedByNamePage.sortedByMostExpensiveToCheapestPageUrl));
+        explicitWait.until(ExpectedConditions.urlToBe(SORTED_BY_NAME_PAGE.sortedByMostExpensiveToCheapestPageUrl));
 
-        stringExpectedTitle = sortedByNamePage.expectedPhone.getAttribute("title");
+        stringExpectedTitle = SORTED_BY_NAME_PAGE.expectedPhone.getAttribute("title");
         LOGGER.debug("Expected title of the phone " + stringExpectedTitle);
-        sortedByNamePage.expectedPhone.click();
+        SORTED_BY_NAME_PAGE.expectedPhone.click();
 
         LOGGER.info("Going to phone page");
-        wait.until(ExpectedConditions.urlToBe(sortedByNamePage.mostExpensiveItemPage));
-        LOGGER.info("Going to " + sortedByNamePage.mostExpensiveItemPage + " URL");
+        explicitWait.until(ExpectedConditions.urlToBe(SORTED_BY_NAME_PAGE.mostExpensiveItemPage));
+        LOGGER.info("Going to " + SORTED_BY_NAME_PAGE.mostExpensiveItemPage + " URL");
 
         LOGGER.info("Buying item");
-        sortedByNamePage.buyButton.click();
+        SORTED_BY_NAME_PAGE.buyButton.click();
         LOGGER.debug("Click buy button");
 
-        wait.until(ExpectedConditions.visibilityOf(sortedByNamePage.goToCart));
-        sortedByNamePage.goToCart.click();
-
-        wait.until(ExpectedConditions.visibilityOf(sortedByNamePage.actualPhone));
+        SORTED_BY_NAME_PAGE.goToCart.click();
 
         LOGGER.info("Verify expected and actual titles");
-        stringActualTitle = sortedByNamePage.actualPhone.getText();
+        stringActualTitle = SORTED_BY_NAME_PAGE.actualPhone.getText();
         LOGGER.debug("Actual title " + stringActualTitle);
 
         if (!stringActualTitle.equals(stringExpectedTitle)) {
@@ -79,36 +81,33 @@ public class BuyProductByNameTestCase extends BasePage {
                 .isEqualTo(stringExpectedTitle);
         LOGGER.info("Verify was successful");
 
-        cartPage.closeButton.click();
-        sortedByNamePage.searchBar.click();
+        CART_PAGE.closeButton.click();
+        SORTED_BY_NAME_PAGE.searchBar.click();
 
         LOGGER.info("Searching second product");
-        searchProduct(sortedByNamePage.searchBar, "Pixel 30W charger");
+        searchProduct(SORTED_BY_NAME_PAGE.searchBar, "Pixel 30W charger");
         LOGGER.debug("Entering second product: \"Pixel 30W charger\"");
-        sortedByNamePage.searchBar.sendKeys(Keys.ENTER);
+        SORTED_BY_NAME_PAGE.searchBar.sendKeys(Keys.ENTER);
 
-        wait.until(ExpectedConditions.visibilityOf(sortedByNamePage.sortSpace));
-        actions.moveToElement(sortedByNamePage.sortSpace).perform();
-        sortedByNamePage.sortByCheap.click();
+        actions.moveToElement(SORTED_BY_NAME_PAGE.sortSpace).perform();
+        SORTED_BY_NAME_PAGE.sortByCheap.click();
 
         LOGGER.info("Sorting items by the cheapest products");
-        wait.until(ExpectedConditions.visibilityOf(sortedByNamePage.expectedCharger));
-        stringExpectedTitle = sortedByNamePage.expectedCharger.getAttribute("title");
+        stringExpectedTitle = SORTED_BY_NAME_PAGE.expectedCharger.getAttribute("title");
         LOGGER.debug("Expected product title" + stringExpectedTitle);
 
-        wait.until(ExpectedConditions.urlToBe(sortedByNamePage.sortedByChargerPhonePageUrl));
-        sortedByNamePage.expectedCharger.click();
+        explicitWait.until(ExpectedConditions.urlToBe(SORTED_BY_NAME_PAGE.sortedByChargerPhonePageUrl));
+        SORTED_BY_NAME_PAGE.expectedCharger.click();
 
         LOGGER.info("Go to selected charger page");
-        wait.until(ExpectedConditions.urlToBe(sortedByNamePage.expectedChargerUrl));
-        LOGGER.debug("Go to " + sortedByNamePage.expectedChargerUrl + " URL");
+        explicitWait.until(ExpectedConditions.urlToBe(SORTED_BY_NAME_PAGE.expectedChargerUrl));
+        LOGGER.debug("Go to " + SORTED_BY_NAME_PAGE.expectedChargerUrl + " URL");
 
         LOGGER.info("Buying product");
-        sortedByNamePage.buyButton.click();
+        SORTED_BY_NAME_PAGE.buyButton.click();
 
         LOGGER.info("Verify expected and actual titles");
-        wait.until(ExpectedConditions.visibilityOf(sortedByNamePage.actualTitleCharger));
-        stringActualTitle = sortedByNamePage.actualTitleCharger.getText();
+        stringActualTitle = SORTED_BY_NAME_PAGE.actualTitleCharger.getText();
         LOGGER.debug("Actual title " + stringActualTitle);
 
         if (!stringActualTitle.equals(stringExpectedTitle)) {

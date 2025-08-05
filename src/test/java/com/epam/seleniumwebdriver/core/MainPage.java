@@ -1,10 +1,15 @@
 package com.epam.seleniumwebdriver.core;
 
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.*;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 public class MainPage extends PageFactory {
+
+    @FindBy(how = How.ID, using = "search-form__input")
+    public WebElement searchBar;
 
     @FindBy(how = How.XPATH, using = "//a[\n" +
             "  contains(@href, '/planshety-i-gadzhety') and\n" +
@@ -26,10 +31,6 @@ public class MainPage extends PageFactory {
     @FindBy(how = How.CLASS_NAME, using = "ct-button")
     public
     WebElement catalogButton;
-    @FindBy(how = How.ID, using = "search-form__input")
-    public
-    WebElement searchBar;
-
     public MainPage(WebDriver driver) {
         initElements(driver, this);
     }
