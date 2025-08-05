@@ -1,46 +1,43 @@
 package com.epam.seleniumwebdriver.testscenario;
 
+import com.epam.seleniumwebdriver.core.BasePage;
+import com.epam.seleniumwebdriver.core.MainPage;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import com.epam.seleniumwebdriver.core.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.*;
+import org.testng.annotations.Test;
 
 import java.time.Duration;
 
+import static com.epam.seleniumwebdriver.drivermanager.DriverManager.getDriver;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Test(groups = {"regression", "smoke"})
 public class BuyNonExistentProductTestCase extends BasePage {
+    private final MainPage MAIN_PAGE = new MainPage(getDriver());
+
     private static final Logger LOGGER = LoggerFactory.getLogger(BuyNonExistentProductTestCase.class);
     public static String stringExpectedMessage = "Нажаль, нічого не знайдено.";
     public static String stringActualMessage;
 
     @Test
     void buyNonExistentProductNegativeTest() {
-        MainPage mainPage = new MainPage(getDriver());
-
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(7));
-        wait.until(ExpectedConditions.visibilityOf(locationButton));
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(7));
 
         selectLocation("Київ");
         LOGGER.debug("Location input: \"Київ\"");
-
-        mainPage.searchBar.click();
+        MAIN_PAGE.searchBar.click();
 
         LOGGER.info("Non existing product searching");
-        searchProduct(mainPage.searchBar, "No kia 3310");
+
+        searchProduct(MAIN_PAGE.searchBar, "No kia 3310");
         LOGGER.debug("Entering a product that is not in the store: \"No kia 3310\"");
 
-        mainPage.searchBar.sendKeys(Keys.ENTER);
-
-        wait.until(ExpectedConditions.visibilityOf(mainPage.emptyCatalogXpath));
+        MAIN_PAGE.searchBar.sendKeys(Keys.ENTER);
 
         LOGGER.info("Having a message on the page");
-        stringActualMessage = mainPage.emptyCatalogXpath.getText();
-        LOGGER.debug("Actual message on the page " + mainPage.emptyCatalogXpath.getText());
+        stringActualMessage = MAIN_PAGE.emptyCatalogXpath.getText();
+        LOGGER.debug("Actual message on the page " + MAIN_PAGE.emptyCatalogXpath.getText());
 
         if (!stringActualMessage.equals(stringExpectedMessage)) {
             LOGGER.error("Text '{}' is not as expected '{}'", stringActualMessage, stringExpectedMessage);

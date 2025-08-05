@@ -1,18 +1,25 @@
 package com.epam.seleniumwebdriver.core;
 
 import com.epam.seleniumwebdriver.core.report.ScreenshotReport;
-import com.epam.seleniumwebdriver.drivermanager.Driver;
 import com.epam.seleniumwebdriver.testscenario.BuyNonExistentProductTestCase;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.*;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchSessionException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
+
+import static com.epam.seleniumwebdriver.drivermanager.DriverManager.closeDriver;
+import static com.epam.seleniumwebdriver.drivermanager.DriverManager.getDriver;
 
 public class BasePage extends PageFactory {
-
-    private Driver driver = new Driver();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BuyNonExistentProductTestCase.class);
     @FindBy(how = How.XPATH, using = "//div[@class='mh-loc']//button[@class='mh-button']")
@@ -24,8 +31,9 @@ public class BasePage extends PageFactory {
     @FindBy(how = How.XPATH, using = "//div[contains(@class, 'geo__cities')]//*[@data-geo-select-city='Одеса']")
     public WebElement locationOdesa;
 
+
     public BasePage() {
-        initElements(driver.getDriver(), this);
+        initElements(getDriver(), this);
     }
 
     @BeforeClass
@@ -34,7 +42,6 @@ public class BasePage extends PageFactory {
         WebDriver driver = getDriver();
         driver.get(ConfigReader.get("base.url"));
         LOGGER.debug("Get a URl " + ConfigReader.get("base.url"));
-        driver.manage().window().maximize();
     }
 
     @AfterMethod
@@ -55,14 +62,10 @@ public class BasePage extends PageFactory {
         }
     }
 
-    @AfterClass
-    public void clodeDriver() {
-        driver.closeDriver();
+    @AfterSuite
+    public void driverCloser() {
+        closeDriver();
         LOGGER.debug("Driver closed");
-    }
-
-    public WebDriver getDriver() {
-        return driver.getDriver();
     }
 
     public void selectLocation(String location) {
