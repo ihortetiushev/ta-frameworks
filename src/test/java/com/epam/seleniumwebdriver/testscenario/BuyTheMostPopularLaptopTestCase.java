@@ -31,6 +31,7 @@ public class BuyTheMostPopularLaptopTestCase extends BasePage {
     void buyTheMostPopularLaptopPositiveTest() {
         Actions actions = new Actions(getDriver());
         WebDriverWait explicitWait = new WebDriverWait(getDriver(), Duration.ofSeconds(7));
+
         getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
         selectLocation("Одеса");
