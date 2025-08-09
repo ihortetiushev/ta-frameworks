@@ -1,7 +1,6 @@
 package com.epam.seleniumwebdriver.core;
 
 import com.epam.seleniumwebdriver.core.report.ScreenshotReport;
-import com.epam.seleniumwebdriver.testscenario.BuyNonExistentProductTestCase;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;
@@ -21,7 +20,7 @@ import static com.epam.seleniumwebdriver.drivermanager.DriverManager.getDriver;
 
 public class BasePage extends PageFactory {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BuyNonExistentProductTestCase.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(BasePage.class);
     @FindBy(how = How.XPATH, using = "//div[@class='mh-loc']//button[@class='mh-button']")
     public WebElement locationButton;
     @FindBy(how = How.XPATH, using = "//div[contains(@class, 'geo__cities')]//*[@data-geo-select-city='Харків']")

@@ -6,8 +6,7 @@ import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;
 
 public class Driver {
-    private WebDriver webDriver;
-
+    private static WebDriver webDriver;
 
     public WebDriver createDriver(DriverType driverType) {
         WebDriver webDriver;

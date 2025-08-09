@@ -68,6 +68,11 @@
             <version>1.18.36</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>selenide</artifactId>
+            <version>7.9.4</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

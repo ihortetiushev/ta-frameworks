@@ -22,4 +22,10 @@ public class CartPage extends PageFactory {
 
     @FindBy(how = How.XPATH, using = "//*[@class='qty__count']//*[@class='input']")
     public WebElement productQuantity;
+    public String buyButtonXpath = "//*[@id='product-buy-button']";
+
+    @FindBy(how = How.XPATH, using = "(//*[@class='products__container']//*[@class='product-item__wrap']//*[@class='vi i-shared vi__close remove'])[1]")
+    public WebElement deleteProduct1;
+    @FindBy(how = How.XPATH, using = "(//*[@class='products__container']//*[@class='product-item__wrap']//*[@class='vi i-shared vi__close remove'])[2]")
+    public WebElement deleteProduct2;
 }
